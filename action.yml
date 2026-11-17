@@ -1,0 +1,23 @@
+name: TimeLodge Time Summary
+description: Get recorded and billable time for a TimeLodge workspace on a chosen date.
+author: TimeLodge
+branding:
+  icon: clock
+  color: blue
+inputs:
+  api-token:
+    description: TimeLodge workspace service token with the time:read scope.
+    required: true
+  date:
+    description: TimeLodge entry date in YYYY-MM-DD format.
+    required: true
+outputs:
+  entry-count:
+    description: Number of time entries returned for the date.
+  recorded-seconds:
+    description: Sum of stored durations in seconds.
+  billable-seconds:
+    description: Sum of stored durations for entries marked billable in seconds.
+runs:
+  using: node24
+  main: action.mjs

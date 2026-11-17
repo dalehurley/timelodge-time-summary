@@ -1,0 +1,15 @@
+#!/bin/sh
+set -eu
+snapshot=$(mktemp -d)
+trap 'rm -rf "$snapshot"' EXIT
+while read -r local_ref local_sha remote_ref remote_sha; do
+    case "$local_ref" in
+        '(delete)') continue ;;
+    esac
+    archive="$snapshot/source.tar"
+    git archive --format=tar --output="$archive" "$local_sha"
+    mkdir "$snapshot/source"
+    tar -xf "$archive" -C "$snapshot/source"
+    (cd "$snapshot/source" && npm test) </dev/null
+    rm -rf "$snapshot/source"
+done
